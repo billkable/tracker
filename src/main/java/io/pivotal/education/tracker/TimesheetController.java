@@ -30,12 +30,16 @@ public class TimesheetController {
     public ResponseEntity<Timesheet> update(@PathVariable long id,
                                             @RequestBody Timesheet timesheetToUpdate) {
 
-        repository.save(new Timesheet(id,
-                timesheetToUpdate.getProjectId(),
-                timesheetToUpdate.getUserId(),
-                timesheetToUpdate.getDate(),
-                timesheetToUpdate.getHours()));
+        if (repository.findById(id).isPresent()) {
+            repository.save(new Timesheet(id,
+                    timesheetToUpdate.getProjectId(),
+                    timesheetToUpdate.getUserId(),
+                    timesheetToUpdate.getDate(),
+                    timesheetToUpdate.getHours()));
+            return noContent().build();
+        } else {
+            return notFound().build();
+        }
 
-        return noContent().build();
     }
 }
