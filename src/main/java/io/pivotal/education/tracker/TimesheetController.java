@@ -25,4 +25,17 @@ public class TimesheetController {
         return repository.findById(id).map(ResponseEntity::ok)
                 .orElseGet(() -> notFound().build());
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Timesheet> update(@PathVariable long id,
+                                            @RequestBody Timesheet timesheetToUpdate) {
+
+        repository.save(new Timesheet(id,
+                timesheetToUpdate.getProjectId(),
+                timesheetToUpdate.getUserId(),
+                timesheetToUpdate.getDate(),
+                timesheetToUpdate.getHours()));
+
+        return noContent().build();
+    }
 }
