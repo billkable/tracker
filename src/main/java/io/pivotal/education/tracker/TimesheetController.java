@@ -19,4 +19,9 @@ public class TimesheetController {
         return created(null)
                 .body(repository.save(timesheetToCreate));
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Timesheet> findById(@PathVariable long id) {
+        return ok(repository.findById(id).get());
+    }
 }
