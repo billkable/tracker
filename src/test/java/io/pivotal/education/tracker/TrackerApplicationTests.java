@@ -134,6 +134,31 @@ public class TrackerApplicationTests {
         assertThat(timesheetResponseEntity.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
 
+    @Test
+    public void testDeleteTimesheet() {
+        Timesheet timesheetCreated = createTimesheet(
+                new Timesheet(
+                        22L,
+                        33L,
+                        LocalDate.of(2019,11,28),
+                        6
+                )
+        );
+
+        ResponseEntity responseEntity =
+                restTemplate.exchange(RequestEntity
+                    .delete(URI.create("/timesheets/" + timesheetCreated.getId()))
+                    .build(),Void.class);
+
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
+
+        ResponseEntity<Timesheet> timesheetResponseEntity =
+                restTemplate.getForEntity("/timesheets/" + timesheetCreated.getId(),
+                        Timesheet.class);
+
+        assertThat(timesheetResponseEntity.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+    }
+
     private Timesheet createTimesheet(Timesheet timesheetToCreate) {
         return restTemplate
                 .postForEntity("/timesheets", timesheetToCreate, Timesheet.class)

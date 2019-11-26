@@ -160,4 +160,17 @@ public class TimesheetControllerTests {
 
         assertThat(timesheetResponseEntity.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
+
+
+
+    @Test
+    public void testDeleteTimesheet() {
+         ResponseEntity<Void> timesheetResponseEntity =
+                controller.delete(1L);
+
+        verify(repository)
+                .deleteById(1L);
+
+        assertThat(timesheetResponseEntity.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
+    }
 }
